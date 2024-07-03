@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Training Progress</title>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1>Live Training Progress</h1>
+    <button onclick="startTraining()">Start Training</button>
+    <div id="progress">
+        <img id="frame" src="" alt="Environment Frame" width="600">
+    </div>
+    <script>
+        var socket = io();
+
+        function startTraining() {
+            socket.emit('start_training');
+
+        }
+
+        socket.on('frame_update', function(data) {
+            document.getElementById('frame').src = 'data:image/jpeg;base64,' + data.frame;
+        });
+
+        socket.on('training_done', function() {
+            alert('Training completed!');
+        });
+    </script>
+</body>
+</html>
